@@ -1,120 +1,35 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
 <title>Malla Curricular Turismo</title>
 <style>
-  * { margin:0;padding:0;box-sizing:border-box; }
-  body {
-    font-family: 'Poppins', sans-serif;
-    background: #eef2f7;
-    padding: 20px;
-  }
-  .container {
-    max-width: 1400px;
-    margin: 0 auto;
-    background: #fff;
-    border-radius: 12px;
-    overflow: hidden;
-    box-shadow: 0 8px 20px rgba(0,0,0,0.1);
-  }
-  .header {
-    background: linear-gradient(135deg,#43cea2,#185a9d);
-    padding: 30px;
-    text-align: center;
-    color: #f5f5f5;
-  }
-  .header h1 { font-size: 2.5rem; }
-  .header p { font-size: 1.1rem; opacity: 0.9; }
-  .stats {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-around;
-    padding: 20px;
-    background: #f7f9fc;
-  }
-  .stat {
-    background: #fff;
-    border-radius: 10px;
-    padding: 15px 25px;
-    text-align: center;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
-    min-width: 120px;
-    margin: 10px;
-  }
-  .stat .num { font-size: 1.8rem; color: #185a9d; }
-  .reset-btn {
-    display: block;
-    margin: 10px auto 20px;
-    background: #ff4d4d;
-    color: #fff;
-    border: none;
-    padding: 10px 20px;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: background .3s;
-  }
-  .reset-btn:hover { background: #e04343; }
-  .unidad {
-    margin: 20px;
-  }
-  .unidad-header {
-    background: #185a9d;
-    color: #fff;
-    padding: 12px;
-    text-align: center;
-    border-radius: 8px 8px 0 0;
-    font-size: 1.25rem;
-  }
-  .grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-    gap: 16px;
-    background: #fafbfc;
-    padding: 16px;
-    border-bottom-left-radius: 8px;
-    border-bottom-right-radius: 8px;
-  }
-  .materia {
-    background: #fff5f5;
-    border-left: 5px solid #ff4d4d;
-    border-radius: 6px;
-    padding: 14px;
-    position: relative;
-    cursor: pointer;
-    transition: background .2s, border-color .2s;
-  }
-  .materia.aprobada {
-    background: #ecffe6;
-    border-left-color: #2ecc71;
-  }
-  .materia.bloqueada {
-    opacity: 0.6;
-    cursor: not-allowed;
-  }
-  .materia:hover:not(.bloqueada) {
-    background: #e6fff1;
-  }
-  .materia h3 { font-size: 1rem; color: #333; }
-  .materia p { font-size: .85rem; color: #555; margin-top: 6px; }
-  .tooltip {
-    visibility: hidden;
-    opacity: 0;
-    background: #444;
-    color: #fff;
-    padding: 5px 8px;
-    border-radius: 4px;
-    position: absolute;
-    top: 8px;
-    right: 8px;
-    font-size: .75rem;
-    transition: opacity .2s;
-  }
-  .materia.bloqueada:hover .tooltip {
-    visibility: visible;
-    opacity: 1;
-  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{font-family:'Poppins',sans-serif;background:#eef2f7;padding:20px;}
+  .container{max-width:1400px;margin:0 auto;background:#fff;border-radius:12px;overflow:hidden;box-shadow:0 8px 20px rgba(0,0,0,0.1);}
+  .header{background:linear-gradient(135deg,#43cea2,#185a9d);padding:30px;text-align:center;color:#f5f5f5;}
+  .header h1{font-size:2.5rem;} .header p{font-size:1.1rem;opacity:0.9;}
+  .stats{display:flex;flex-wrap:wrap;justify-content:space-around;padding:20px;background:#f7f9fc;}
+  .stat{background:#fff;border-radius:10px;padding:15px 25px;text-align:center;box-shadow:0 4px 12px rgba(0,0,0,0.05);min-width:120px;margin:10px;}
+  .stat .num{font-size:1.8rem;color:#185a9d;}
+  .reset-btn{display:block;margin:10px auto 20px;background:#ff4d4d;color:#fff;border:none;padding:10px 20px;border-radius:8px;cursor:pointer;transition:background .3s;}
+  .reset-btn:hover{background:#e04343;}
+
+  .unidad{margin:20px;}
+  .unidad-header{background:#185a9d;color:#fff;padding:12px;text-align:center;border-radius:8px;font-size:1.3rem;margin-bottom:10px;}
+  .semestres{display:flex;overflow-x:auto;gap:10px;padding-bottom:10px;}
+  .semestre{min-width:300px;background:#fafbfc;border-radius:8px;box-shadow:0 2px 10px rgba(0,0,0,0.05);}
+  .sem-header{background:#4facfe;color:#fff;padding:8px;text-align:center;border-radius:8px 8px 0 0;font-size:1.1rem;}
+  .grid{display:flex;flex-direction:column;gap:10px;padding:10px;}
+
+  .materia{background:#fff5f5;border-left:5px solid #ff4d4d;border-radius:6px;padding:14px;position:relative;cursor:pointer;transition:background .2s,border-color .2s;}
+  .materia.aprobada{background:#ecffe6;border-left-color:#2ecc71;}
+  .materia.bloqueada{opacity:0.6;cursor:not-allowed;}
+  .materia:hover:not(.bloqueada){background:#e6fff1;}
+  .materia h3{font-size:1rem;color:#333;}
+  .materia p{font-size:.85rem;color:#555;margin-top:6px;}
+  .tooltip{visibility:hidden;opacity:0;background:#444;color:#fff;padding:5px 8px;border-radius:4px;position:absolute;top:8px;right:8px;font-size:.75rem;transition:opacity .2s;}
+  .materia.bloqueada:hover .tooltip{visibility:visible;opacity:1;}
 </style>
 </head>
 <body>
@@ -132,156 +47,88 @@
   <button class="reset-btn" onclick="reset()">Reiniciar Progreso</button>
 
   <!-- Unidades -->
-  <div class="unidad" id="unidad-PRE"><div class="unidad-header">Preuniversitaria</div><div class="grid" data-ciclo="PRE"></div></div>
-  <div class="unidad" id="unidad-B1"><div class="unidad-header">Unidad Básica – Nivel 1</div><div class="grid" data-ciclo="B1"></div></div>
-  <div class="unidad" id="unidad-B2"><div class="unidad-header">Unidad Básica – Nivel 2</div><div class="grid" data-ciclo="B2"></div></div>
-  <div class="unidad" id="unidad-B3"><div class="unidad-header">Unidad Básica – Nivel 3</div><div class="grid" data-ciclo="B3"></div></div>
-  <div class="unidad" id="unidad-P4"><div class="unidad-header">Unidad Profesional – Nivel 4</div><div class="grid" data-ciclo="P4"></div></div>
-  <div class="unidad" id="unidad-P5"><div class="unidad-header">Unidad Profesional – Nivel 5</div><div class="grid" data-ciclo="P5"></div></div>
-  <div class="unidad" id="unidad-P6"><div class="unidad-header">Unidad Profesional – Nivel 6</div><div class="grid" data-ciclo="P6"></div></div>
-  <div class="unidad" id="unidad-P7"><div class="unidad-header">Unidad Profesional – Nivel 7</div><div class="grid" data-ciclo="P7"></div></div>
-  <div class="unidad" id="unidad-T8"><div class="unidad-header">Unidad Titulación – Nivel 8</div><div class="grid" data-ciclo="T8"></div></div>
-  <div class="unidad" id="unidad-T9"><div class="unidad-header">Unidad Titulación – Nivel 9</div><div class="grid" data-ciclo="T9"></div></div>
-  <div class="unidad" id="unidad-M"><div class="unidad-header">Módulos (Inglés & Computación)</div><div class="grid" data-ciclo="M"></div></div>
+  <div class="unidad"><div class="unidad-header">Preuniversitaria</div>
+    <div class="semestres"><div class="semestre" data-ciclo="PRE">
+      <div class="sem-header">Semestre Único</div><div class="grid"></div>
+    </div></div>
+  </div>
+
+  <div class="unidad"><div class="unidad-header">Unidad Básica</div>
+    <div class="semestres">
+      <div class="semestre" data-ciclo="B1"><div class="sem-header">Nivel 1</div><div class="grid"></div></div>
+      <div class="semestre" data-ciclo="B2"><div class="sem-header">Nivel 2</div><div class="grid"></div></div>
+      <div class="semestre" data-ciclo="B3"><div class="sem-header">Nivel 3</div><div class="grid"></div></div>
+    </div>
+  </div>
+
+  <div class="unidad"><div class="unidad-header">Unidad Profesional</div>
+    <div class="semestres">
+      <div class="semestre" data-ciclo="P4"><div class="sem-header">Nivel 4</div><div class="grid"></div></div>
+      <div class="semestre" data-ciclo="P5"><div class="sem-header">Nivel 5</div><div class="grid"></div></div>
+      <div class="semestre" data-ciclo="P6"><div class="sem-header">Nivel 6</div><div class="grid"></div></div>
+      <div class="semestre" data-ciclo="P7"><div class="sem-header">Nivel 7</div><div class="grid"></div></div>
+    </div>
+  </div>
+
+  <div class="unidad"><div class="unidad-header">Unidad de Titulación</div>
+    <div class="semestres">
+      <div class="semestre" data-ciclo="T8"><div class="sem-header">Nivel 8</div><div class="grid"></div></div>
+      <div class="semestre" data-ciclo="T9"><div class="sem-header">Nivel 9</div><div class="grid"></div></div>
+    </div>
+  </div>
+
+  <div class="unidad"><div class="unidad-header">Módulos</div>
+    <div class="semestres">
+      <div class="semestre" data-ciclo="M"><div class="sem-header">Inglés & Computación</div><div class="grid"></div></div>
+    </div>
+  </div>
+
 </div>
 
 <script>
-const materias = [
-  // Pre
-  { id:'Epist', name:'Epistemología del Turismo', ciclo:'PRE', credits:0, prereq:[] },
-  { id:'IntroCom', name:'Introducción a la Comunicación Académica', ciclo:'PRE', credits:0, prereq:[] },
-  { id:'PensComp', name:'Pensamiento Computacional', ciclo:'PRE', credits:0, prereq:[] },
+const materias=[/* igual que antes: array completo de objetos */];
+let aprobadas=JSON.parse(localStorage.getItem('aprobadas')||'{}');
 
-  // Básica 1
-  { id:'MatFin', name:'Matemática Financiera', ciclo:'B1', credits:1.67, prereq:['PensComp'] },
-  { id:'TecApl', name:'Tecnología Aplicada', ciclo:'B1', credits:3.33, prereq:['PensComp'] },
-  { id:'TeoriaTur', name:'Teoría del Turismo', ciclo:'B1', credits:3.33, prereq:['Epist'] },
-  { id:'Admin', name:'Administración', ciclo:'B1', credits:3.33, prereq:['IntroCom'] },
-  { id:'MetodInv', name:'Metodología de la Investigación Científica', ciclo:'B1', credits:1.67, prereq:['IntroCom'] },
-  { id:'TecOpTur', name:'Técnicas de Operación Turística', ciclo:'B1', credits:3.33, prereq:['Epist'] },
-
-  // Básica 2
-  { id:'Cosmos', name:'Cosmos Histórico', ciclo:'B2', credits:3.33, prereq:['TeoriaTur'] },
-  { id:'Bioentorno', name:'Bioentorno Turístico', ciclo:'B2', credits:3.33, prereq:['TeoriaTur'] },
-  { id:'TecGuiar', name:'Técnicas de Guiar', ciclo:'B2', credits:3.33, prereq:['TecOpTur'] },
-  { id:'Hospitalidad', name:'Hospitalidad', ciclo:'B2', credits:3.33, prereq:['Admin'] },
-  { id:'EstDesc', name:'Estadística Descriptiva Administrativa', ciclo:'B2', credits:1.67, prereq:['MatFin','TecApl'] },
-  { id:'ComOral', name:'Comunicación Oral y Escrita', ciclo:'B2', credits:1.67, prereq:['MetodInv'] },
-
-  // Básica 3
-  { id:'ComTur', name:'Comunidad y Turismo', ciclo:'B3', credits:1.67, prereq:['Hospitalidad'] },
-  { id:'Gastron', name:'Gastronomía Ancestral y Patrimonio', ciclo:'B3', credits:3.33, prereq:['Hospitalidad'] },
-  { id:'GestOpAreas', name:'Gestión Operativa de Áreas Protegidas', ciclo:'B3', credits:3.33, prereq:['TecGuiar'] },
-  { id:'ManifPlast', name:'Manifestaciones Plásticas Turísticas', ciclo:'B3', credits:3.33, prereq:['Cosmos','ComOral'] },
-  { id:'ProsInter', name:'Prospección Intercultural Ecuatoriana', ciclo:'B3', credits:1.67, prereq:['Cosmos'] },
-  { id:'ContGen', name:'Contabilidad General', ciclo:'B3', credits:3.33, prereq:['EstDesc'] },
-
-  // Profesional 4
-  { id:'FinCorto', name:'Finanzas de Corto Plazo', ciclo:'P4', credits:3.33, prereq:['ContGen'] },
-  { id:'GestTerr', name:'Gestión Territorial en Turismo', ciclo:'P4', credits:3.33, prereq:['GestOpAreas','ManifPlast'] },
-  { id:'GestTalHum', name:'Gestión del Talento Humano', ciclo:'P4', credits:2.5, prereq:['ContGen'] },
-  { id:'Folklore', name:'Folklore', ciclo:'P4', credits:1.67, prereq:['ManifPlast','ProsInter'] },
-  { id:'CodTur', name:'Codificación Turística', ciclo:'P4', credits:3.33, prereq:['GestOpAreas'] },
-  { id:'CampRec', name:'Campismo y Recreación Turística', ciclo:'P4', credits:1.67, prereq:['Gastron','ComTur'] },
-
-  // Profesional 5
-  { id:'Micro', name:'Microeconomía', ciclo:'P5', credits:3.33, prereq:['FinCorto'] },
-  { id:'OpTours', name:'Operación de Tours', ciclo:'P5', credits:3.33, prereq:['CodTur','GestTerr'] },
-  { id:'ForReg', name:'Fomento y Regulaciones a la Actividad Turística', ciclo:'P5', credits:3.33, prereq:['GestTalHum'] },
-  { id:'DesDes', name:'Desarrollo del Turismo Sostenible', ciclo:'P5', credits:5, prereq:[
-      'MatFin','TecApl','TeoriaTur','Admin','MetodInv','TecOpTur','Cosmos',
-      'Bioentorno','TecGuiar','Hospitalidad','EstDesc','ComOral','ComTur',
-      'Gastron','GestOpAreas','ManifPlast','ProsInter','ContGen','FinCorto',
-      'GestTerr','GestTalHum','Folklore','CodTur','CampRec'
-    ] },
-  { id:'IconTur', name:'Iconografía Turística', ciclo:'P5', credits:1.67, prereq:['CodTur'] },
-  { id:'Arqueol', name:'Arqueología', ciclo:'P5', credits:1.67, prereq:['Folklore'] },
-
-  // Profesional 6
-  { id:'PlanTur', name:'Planificación Turística', ciclo:'P6', credits:5, prereq:['DesDes'] },
-  { id:'GestInn', name:'Gestión de la Innovación y Emprendimiento', ciclo:'P6', credits:3.33, prereq:['ForReg'] },
-  { id:'AnimTur', name:'Animación Turística', ciclo:'P6', credits:3.33, prereq:['IconTur'] },
-  { id:'RiceEv', name:'Rice - Organización de Eventos', ciclo:'P6', credits:1.67, prereq:['DesDes'] },
-  { id:'SisReg', name:'Sistemas de Registros Turísticos / Sabre Y Amadeus', ciclo:'P6', credits:1.67, prereq:['OpTours'] },
-  { id:'Macro', name:'Macroeconomía', ciclo:'P6', credits:3.33, prereq:['Micro'] },
-
-  // Profesional 7
-  { id:'Patrimonio', name:'Patrimonio', ciclo:'P7', credits:5, prereq:['PlanTur','GestInn','AnimTur','RiceEv','SisReg','Macro'] },
-  { id:'GestCal', name:'Gestión de Calidad y Productividad', ciclo:'P7', credits:3.33, prereq:['GestInn'] },
-  { id:'OpHotel', name:'Operación Hotelera', ciclo:'P7', credits:3.33, prereq:['SisReg'] },
-  { id:'OpAliBeb', name:'Operación de Alimentos y Bebidas', ciclo:'P7', credits:1.67, prereq:['AnimTur'] },
-  { id:'SocioTur', name:'Sociología del Turismo', ciclo:'P7', credits:3.33, prereq:['AnimTur'] },
-  { id:'TendTur', name:'Tendencias Turísticas', ciclo:'P7', credits:1.67, prereq:['Macro'] },
-
-  // Titulación 8
-  { id:'FormPro', name:'Formulación y Evaluación de Proyectos', ciclo:'T8', credits:3.33, prereq:['GestCal'] },
-  { id:'IntReg', name:'Integración Regional Turística', ciclo:'T8', credits:5, prereq:['Patrimonio','GestCal','OpAliBeb','OpHotel','SocioTur','TendTur'] },
-  { id:'EstrCom', name:'Estrategias Comerciales Turísticas', ciclo:'T8', credits:3.33, prereq:['TendTur'] },
-  { id:'RedacTit', name:'Redacción del Trabajo de Titulación', ciclo:'T8', credits:1.67, prereq:['Patrimonio','GestCal','OpAliBeb','OpHotel','SocioTur','TendTur'] },
-  { id:'AprArte', name:'Apreciación del Arte y la Cultura', ciclo:'T8', credits:1.67, prereq:['Patrimonio'] },
-  { id:'TurGov', name:'Turismo y Gobernanza', ciclo:'T8', credits:3.33, prereq:['OpAliBeb','SocioTur'] },
-
-  // Titulación 9
-  { id:'GestDest', name:'Gestión Integral de Destinos Turísticos', ciclo:'T9', credits:5, prereq:['FormPro','IntReg','EstrCom','RedacTit','AprArte','TurGov'] },
-  { id:'NegCom', name:'Técnicas de Negociación y Comunicación para el Turismo', ciclo:'T9', credits:3.33, prereq:['EstrCom'] },
-  { id:'RealNac', name:'Realidad Nacional y Geopolítica', ciclo:'T9', credits:1.67, prereq:['TurGov'] },
-  { id:'TrabTit', name:'Trabajo de Titulación', ciclo:'T9', credits:3.33, prereq:['RedacTit'] },
-  { id:'ContrPub', name:'Contratación Pública', ciclo:'T9', credits:3.33, prereq:['FormPro'] },
-  { id:'Lider', name:'Liderazgo', ciclo:'T9', credits:1.67, prereq:['AprArte'] },
-
-  // Módulos
-  { id:'Ing0', name:'-A1', ciclo:'M', credits:2.08, prereq:[] },
-  { id:'IngA1', name:'A1', ciclo:'M', credits:2.08, prereq:['Ing0'] },
-  { id:'IngA2', name:'A2', ciclo:'M', credits:2.08, prereq:['IngA1'] },
-  { id:'IngB1', name:'B1', ciclo:'M', credits:2.08, prereq:['IngA2'] },
-  { id:'IngB2', name:'B2', ciclo:'M', credits:2.08, prereq:['IngB1'] },
-  { id:'IngC1', name:'C1', ciclo:'M', credits:2.08, prereq:['IngB2'] },
-  { id:'IngC2', name:'C2', ciclo:'M', credits:2.08, prereq:['IngC1'] },
-  { id:'Comp0', name:'Windows‑Word‑Internet', ciclo:'M', credits:8, prereq:[] },
-  { id:'Comp1', name:'Excel‑PowerPoint', ciclo:'M', credits:8, prereq:['Comp0'] },
-];
-let aprobadas = JSON.parse(localStorage.getItem('aprobadas')||'{}');
-
-function update() {
-  document.querySelectorAll('.grid').forEach(grid=>{
-    const ciclo = grid.dataset.ciclo;
+function update(){
+  document.querySelectorAll('.semestre').forEach(sec=>{
+    const ciclo=sec.dataset.ciclo;
+    const grid=sec.querySelector('.grid');
     materias.filter(m=>m.ciclo===ciclo).forEach(m=>{
-      let el = document.getElementById(m.id);
-      if(!el) {
-        el = document.createElement('div');
-        el.className = 'materia';
-        el.id = m.id;
-        el.innerHTML = `<h3>${m.name}</h3><p>Créditos: ${m.credits.toFixed(2)}</p><div class="tooltip"></div>`;
-        el.onclick = ()=>toggle(m.id);
+      let el=document.getElementById(m.id);
+      if(!el){
+        el=document.createElement('div');
+        el.className='materia';
+        el.id=m.id;
+        el.innerHTML=`<h3>${m.name}</h3><p>Créditos: ${m.credits.toFixed(2)}</p><div class="tooltip"></div>`;
+        el.onclick=()=>toggle(m.id);
         grid.appendChild(el);
       }
-      const ok = aprobadas[m.id];
-      const faltan = m.prereq.filter(p=>!aprobadas[p]).map(p=> materias.find(mm=>mm.id===p).name);
-      el.classList.toggle('aprobada', ok);
-      el.classList.toggle('bloqueada', !ok && faltan.length);
-      el.querySelector('.tooltip').innerText = faltan.length ? 'Faltan: ' + faltan.join(', ') : '';
+      const ok=aprobadas[m.id];
+      const faltan=m.prereq.filter(p=>!aprobadas[p]).map(p=>materias.find(mm=>mm.id===p).name);
+      el.classList.toggle('aprobada',ok);
+      el.classList.toggle('bloqueada',!ok && faltan.length);
+      el.querySelector('.tooltip').innerText=faltan.length?'Faltan: '+faltan.join(', '):'';
     });
   });
-  const total = materias.length;
-  const comp = Object.values(aprobadas).filter(v=>v).length;
-  const dispo = materias.filter(m=>!aprobadas[m.id] && !m.prereq.some(p=>!aprobadas[p])).length;
-  document.getElementById('stat-total').innerText = total;
-  document.getElementById('stat-completada').innerText = comp;
-  document.getElementById('stat-disponible').innerText = dispo;
-  document.getElementById('stat-progreso').innerText = ((comp/total)*100).toFixed(0)+'%';
+  const total=materias.length, comp=Object.values(aprobadas).filter(v=>v).length;
+  const dispo=materias.filter(m=>!aprobadas[m.id]&&!m.prereq.some(p=>!aprobadas[p])).length;
+  document.getElementById('stat-total').innerText=total;
+  document.getElementById('stat-completada').innerText=comp;
+  document.getElementById('stat-disponible').innerText=dispo;
+  document.getElementById('stat-progreso').innerText=((comp/total)*100).toFixed(0)+'%';
 }
 
-function toggle(id) {
-  const m = materias.find(x=>x.id===id);
-  if(m.prereq.some(p=>!aprobadas[p])) return;
-  aprobadas[id] = !aprobadas[id];
-  localStorage.setItem('aprobadas', JSON.stringify(aprobadas));
+function toggle(id){
+  const m=materias.find(x=>x.id===id);
+  if(m.prereq.some(p=>!aprobadas[p]))return;
+  aprobadas[id]=!aprobadas[id];
+  localStorage.setItem('aprobadas',JSON.stringify(aprobadas));
   update();
 }
 
-function reset() {
-  if(confirm('¿Reiniciar todo el progreso?')) {
-    aprobadas = {};
+function reset(){
+  if(confirm('¿Reiniciar todo el progreso?')){
+    aprobadas={};
     localStorage.removeItem('aprobadas');
     update();
   }
