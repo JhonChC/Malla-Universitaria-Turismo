@@ -2,216 +2,292 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<title>Licenciatura en Turismo</title>
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Malla Curricular Turismo</title>
 <style>
-  body { font-family: Arial, sans-serif; background: #f5f7fa; color: #333; padding: 20px;}
-  h1 { text-align:center; color: #2c3e50; }
-  .grid { display: grid; grid-template-columns: repeat(6, 1fr); gap: 10px; }
-  .materia {
-    background: #fff; border-radius: 5px; padding: 8px; position: relative;
-    cursor: pointer; text-align: center;
-    transition: background 0.3s;
+  * { margin:0;padding:0;box-sizing:border-box; }
+  body {
+    font-family: 'Poppins', sans-serif;
+    background: #eef2f7;
+    padding: 20px;
   }
-  .materia.bloqueada { background: #e0e0e0; cursor: not-allowed; }
-  .materia.aprobada { background: #d4edda; }
-  .materia:hover:not(.bloqueada) { background: #c8e6c9; }
+  .container {
+    max-width: 1400px;
+    margin: 0 auto;
+    background: #fff;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+  }
+  .header {
+    background: linear-gradient(135deg,#43cea2,#185a9d);
+    padding: 30px;
+    text-align: center;
+    color: #f5f5f5;
+  }
+  .header h1 { font-size: 2.5rem; }
+  .header p { font-size: 1.1rem; opacity: 0.9; }
+  .stats {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    padding: 20px;
+    background: #f7f9fc;
+  }
+  .stat {
+    background: #fff;
+    border-radius: 10px;
+    padding: 15px 25px;
+    text-align: center;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+    min-width: 120px;
+    margin: 10px;
+  }
+  .stat .num { font-size: 1.8rem; color: #185a9d; }
+  .reset-btn {
+    display: block;
+    margin: 10px auto 20px;
+    background: #ff4d4d;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background .3s;
+  }
+  .reset-btn:hover { background: #e04343; }
+  .unidad {
+    margin: 20px;
+  }
+  .unidad-header {
+    background: #185a9d;
+    color: #fff;
+    padding: 12px;
+    text-align: center;
+    border-radius: 8px 8px 0 0;
+    font-size: 1.25rem;
+  }
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 16px;
+    background: #fafbfc;
+    padding: 16px;
+    border-bottom-left-radius: 8px;
+    border-bottom-right-radius: 8px;
+  }
+  .materia {
+    background: #fff5f5;
+    border-left: 5px solid #ff4d4d;
+    border-radius: 6px;
+    padding: 14px;
+    position: relative;
+    cursor: pointer;
+    transition: background .2s, border-color .2s;
+  }
+  .materia.aprobada {
+    background: #ecffe6;
+    border-left-color: #2ecc71;
+  }
+  .materia.bloqueada {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+  .materia:hover:not(.bloqueada) {
+    background: #e6fff1;
+  }
+  .materia h3 { font-size: 1rem; color: #333; }
+  .materia p { font-size: .85rem; color: #555; margin-top: 6px; }
   .tooltip {
-    visibility: hidden; background: #555; color: #fff;
-    text-align: center; border-radius: 5px; padding: 5px;
-    position: absolute; z-index: 1; bottom: 125%; left: 50%;
-    transform: translateX(-50%); opacity: 0; transition: opacity 0.3s;
-    width: 150px;
+    visibility: hidden;
+    opacity: 0;
+    background: #444;
+    color: #fff;
+    padding: 5px 8px;
+    border-radius: 4px;
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    font-size: .75rem;
+    transition: opacity .2s;
   }
   .materia.bloqueada:hover .tooltip {
-    visibility: visible; opacity: 1;
+    visibility: visible;
+    opacity: 1;
   }
-  .unidad { margin-top: 30px; }
-  .unidad h2 { color: #34495e; }
-  .creditos { margin-top: 10px; font-weight: bold; }
 </style>
 </head>
 <body>
-<h1>Licenciatura en Turismo</h1>
+<div class="container">
+  <div class="header">
+    <h1>Malla Curricular – Turismo</h1>
+    <p>Haz clic en materias disponibles para aprobarlas y desbloquear las siguientes.</p>
+  </div>
+  <div class="stats">
+    <div class="stat"><div class="num" id="stat-completada">0</div><div>Aprobadas</div></div>
+    <div class="stat"><div class="num" id="stat-disponible">0</div><div>Disponibles</div></div>
+    <div class="stat"><div class="num" id="stat-total">0</div><div>Total</div></div>
+    <div class="stat"><div class="num" id="stat-progreso">0%</div><div>Progreso</div></div>
+  </div>
+  <button class="reset-btn" onclick="reset()">Reiniciar Progreso</button>
 
-<div class="unidad" id="unidad-pre">
-  <h2>Preuniversitaria</h2>
-  <div class="grid" data-ciclo="PRE"></div>
-  <div class="creditos">Créditos: <span id="creditos-pre">0</span></div>
-</div>
-
-<div class="unidad" id="unidad-basica">
-  <h2>Unidad Básica</h2>
-  <div class="grid" data-ciclo="B1"></div>
-  <div class="grid" data-ciclo="B2"></div>
-  <div class="grid" data-ciclo="B3"></div>
-  <div class="creditos">Créditos: <span id="creditos-base">0</span></div>
-</div>
-
-<div class="unidad" id="unidad-prof">
-  <h2>Unidad Profesional</h2>
-  <div class="grid" data-ciclo="P4"></div>
-  <div class="grid" data-ciclo="P5"></div>
-  <div class="grid" data-ciclo="P6"></div>
-  <div class="grid" data-ciclo="P7"></div>
-  <div class="creditos">Créditos: <span id="creditos-prof">0</span></div>
-</div>
-
-<div class="unidad" id="unidad-titu">
-  <h2>Unidad de Titulación</h2>
-  <div class="grid" data-ciclo="T8"></div>
-  <div class="grid" data-ciclo="T9"></div>
-  <div class="creditos">Créditos: <span id="creditos-tit">0</span></div>
-</div>
-
-<div class="unidad" id="modulos">
-  <h2>Módulos</h2>
-  <div class="grid" data-ciclo="M"></div>
-  <div class="creditos">Créditos: <span id="creditos-mod">0</span></div>
+  <!-- Unidades -->
+  <div class="unidad" id="unidad-PRE"><div class="unidad-header">Preuniversitaria</div><div class="grid" data-ciclo="PRE"></div></div>
+  <div class="unidad" id="unidad-B1"><div class="unidad-header">Unidad Básica – Nivel 1</div><div class="grid" data-ciclo="B1"></div></div>
+  <div class="unidad" id="unidad-B2"><div class="unidad-header">Unidad Básica – Nivel 2</div><div class="grid" data-ciclo="B2"></div></div>
+  <div class="unidad" id="unidad-B3"><div class="unidad-header">Unidad Básica – Nivel 3</div><div class="grid" data-ciclo="B3"></div></div>
+  <div class="unidad" id="unidad-P4"><div class="unidad-header">Unidad Profesional – Nivel 4</div><div class="grid" data-ciclo="P4"></div></div>
+  <div class="unidad" id="unidad-P5"><div class="unidad-header">Unidad Profesional – Nivel 5</div><div class="grid" data-ciclo="P5"></div></div>
+  <div class="unidad" id="unidad-P6"><div class="unidad-header">Unidad Profesional – Nivel 6</div><div class="grid" data-ciclo="P6"></div></div>
+  <div class="unidad" id="unidad-P7"><div class="unidad-header">Unidad Profesional – Nivel 7</div><div class="grid" data-ciclo="P7"></div></div>
+  <div class="unidad" id="unidad-T8"><div class="unidad-header">Unidad Titulación – Nivel 8</div><div class="grid" data-ciclo="T8"></div></div>
+  <div class="unidad" id="unidad-T9"><div class="unidad-header">Unidad Titulación – Nivel 9</div><div class="grid" data-ciclo="T9"></div></div>
+  <div class="unidad" id="unidad-M"><div class="unidad-header">Módulos (Inglés & Computación)</div><div class="grid" data-ciclo="M"></div></div>
 </div>
 
 <script>
-// Define materias
 const materias = [
-// Pre
-{ id:'Epistemología_del_Turismo', name:'Epistemología del Turismo', ciclo:'PRE', credits:0, prereq:[] },
-{ id:'Introducción_a_la_Comunicación_Académica', name:'Introducción a la Comunicación Académica', ciclo:'PRE', credits:0, prereq:[] },
-{ id:'Pensamiento_Computacional', name:'Pensamiento Computacional', ciclo:'PRE', credits:0, prereq:[] },
-// Básica 1
-{ id:'Matemática_Financiera', name:'Matemática Financiera', ciclo:'B1', credits:1.6666, prereq:['Pensamiento_Computacional']},
-{ id:'Tecnología_Aplicada', name:'Tecnología Aplicada', ciclo:'B1', credits:3.33, prereq:['Pensamiento_Computacional']},
-{ id:'Teoría_Del_Turismo', name:'Teoría Del Turismo', ciclo:'B1', credits:3.33, prereq:['Epistemología_del_Turismo']},
-{ id:'Administración', name:'Administración', ciclo:'B1', credits:3.33, prereq:['Introducción_a_la_Comunicación_Académica']},
-{ id:'Metodología_De_La_Investigación', name:'Metodología De La Investigación Científica', ciclo:'B1', credits:1.67, prereq:['Introducción_a_la_Comunicación_Académica']},
-{ id:'Técnicas_De_Operación_Turística', name:'Técnicas De Operación Turística', ciclo:'B1', credits:3.33, prereq:['Epistemología_del_Turismo']},
-// Básica 2
-{ id:'Cosmos_Histórico', name:'Cosmos Histórico', ciclo:'B2', credits:3.33, prereq:['Teoría_Del_Turismo']},
-{ id:'Bioentorno_Turístico', name:'Bioentorno Turístico', ciclo:'B2', credits:3.33, prereq:['Teoría_Del_Turismo']},
-{ id:'Técnicas_De_Guiar', name:'Técnicas De Guiar', ciclo:'B2', credits:3.33, prereq:['Técnicas_De_Operación_Turística']},
-{ id:'Hospitalidad', name:'Hospitalidad', ciclo:'B2', credits:3.33, prereq:['Administración']},
-{ id:'Estadística_Descriptiva', name:'Estadística Descriptiva Administrativa', ciclo:'B2', credits:1.6666, prereq:['Matemática_Financiera','Tecnología_Aplicada']},
-{ id:'Comunicación_Oral_Y_Escrita', name:'Comunicación Oral Y Escrita', ciclo:'B2', credits:1.67, prereq:['Metodología_De_La_Investigación']},
-// Básica 3
-{ id:'Comunidad_Y_Turismo', name:'Comunidad Y Turismo', ciclo:'B3', credits:1.6666, prereq:['Hospitalidad']},
-{ id:'Gastronomía_Ancestral', name:'Gastronomía Ancestral Y Patrimonio', ciclo:'B3', credits:3.33, prereq:['Hospitalidad']},
-{ id:'Gestión_Operativa_Areas', name:'Gestión Operativa De Áreas Protegidas', ciclo:'B3', credits:3.33, prereq:['Técnicas_De_Guiar']},
-{ id:'Manifestaciones_Plásticas', name:'Manifestaciones Plásticas Turísticas', ciclo:'B3', credits:3.33, prereq:['Cosmos_Histórico','Comunicación_Oral_Y_Escrita']},
-{ id:'Prospección_Intercultural', name:'Prospección Intercultural Ecuatoriana', ciclo:'B3', credits:1.6666, prereq:['Cosmos_Histórico']},
-{ id:'Contabilidad_General', name:'Contabilidad General', ciclo:'B3', credits:3.33, prereq:['Estadística_Descriptiva']},
-// Profesional 4
-{ id:'Finanzas_Corto_Plazo', name:'Finanzas De Corto Plazo', ciclo:'P4', credits:3.33, prereq:['Contabilidad_General']},
-{ id:'Gestión_Territorial', name:'Gestión Territorial En Turismo', ciclo:'P4', credits:3.33, prereq:['Gestión_Operativa_Areas','Manifestaciones_Plásticas']},
-{ id:'Gestión_Talento_Humano', name:'Gestión Del Talento Humano Por Competencias', ciclo:'P4', credits:2.5, prereq:['Contabilidad_General']},
-{ id:'Folklore', name:'Folklore', ciclo:'P4', credits:1.6666, prereq:['Manifestaciones_Plásticas','Prospección_Intercultural']},
-{ id:'Codificación_Turística', name:'Codificación Turística', ciclo:'P4', credits:3.33, prereq:['Gestión_Operativa_Areas']},
-{ id:'Campismo_Recreación', name:'Campismo Y Recreación Turística', ciclo:'P4', credits:1.6666, prereq:['Gastronomía_Ancestral','Comunidad_Y_Turismo']},
-// Profesional 5
-{ id:'Microeconomía', name:'Microeconomía', ciclo:'P5', credits:3.33, prereq:['Finanzas_Corto_Plazo']},
-{ id:'Operación_De_Tours', name:'Operación De Tours', ciclo:'P5', credits:3.33, prereq:['Codificación_Turística','Gestión_Territorial']},
-{ id:'Fomento_Regulaciones', name:'Fomento Y Regulaciones A La Actividad Turística', ciclo:'P5', credits:3.33, prereq:['Gestión_Talento_Humano']},
-{ id:'Desarrollo_Sostenible', name:'Desarrollo Del Turismo Sostenible', ciclo:'P5', credits:5, prereq:[]}, // dependencias múltiples, usarlas
-{ id:'Iconografía_Turística', name:'Iconografía Turística', ciclo:'P5', credits:1.6666, prereq:[]},
-{ id:'Arqueología', name:'Arqueología', ciclo:'P5', credits:1.6666, prereq:['Folklore']},
-// Profesional 6
-{ id:'Planificación_Turística', name:'Planificación Turística', ciclo:'P6', credits:5, prereq:[]},
-{ id:'Innovación_Emprendimiento', name:'Gestión De La Innovación Y Emprendimiento', ciclo:'P6', credits:3.33, prereq:[]},
-{ id:'Animación_Turística', name:'Animación Turística', ciclo:'P6', credits:3.33, prereq:[]},
-{ id:'Rice_Organización_Eventos', name:'Rice - Organización De Eventos', ciclo:'P6', credits:1.6666, prereq:[]},
-{ id:'Sistemas_Registros', name:'Sistemas De Registros Turísticos / Sabre Y Amadeus', ciclo:'P6', credits:1.6666, prereq:[]},
-{ id:'Macroeconomía', name:'Macroeconomía', ciclo:'P6', credits:3.33, prereq:['Microeconomía']},
-// Profesional 7
-{ id:'Patrimonio', name:'Patrimonio', ciclo:'P7', credits:5, prereq:[]},
-{ id:'Gestión_Calidad', name:'Gestión De Calidad Y La Productividad', ciclo:'P7', credits:3.33, prereq:[]},
-{ id:'Operación_Hotelera', name:'Operación Hotelera', ciclo:'P7', credits:3.33, prereq:[]},
-{ id:'Operación_Alimentos_Bebidas', name:'Operación De Alimentos Y Bebidas', ciclo:'P7', credits:1.6666, prereq:[]},
-{ id:'Sociología_Del_Turismo', name:'Sociología Del Turismo', ciclo:'P7', credits:3.33, prereq:[]},
-{ id:'Tendencias_Turísticas', name:'Tendencias Turísticas', ciclo:'P7', credits:1.6666, prereq:[]},
-// Titulación 8
-{ id:'Formulación_Proyectos', name:'Formulación Y Evaluación De Proyectos', ciclo:'T8', credits:3.33, prereq:[]},
-{ id:'Integración_Regional', name:'Integración Regional Turística', ciclo:'T8', credits:5, prereq:[]},
-{ id:'Estrategias_Comerciales', name:'Estrategias Comerciales Turísticas', ciclo:'T8', credits:3.33, prereq:[]},
-{ id:'Redacción_Titulación', name:'Redacción Del Trabajo De Titulación', ciclo:'T8', credits:1.6666, prereq:[]},
-{ id:'Apreciación_Arte_Cultura', name:'Apreciación Del Arte Y La Cultura', ciclo:'T8', credits:1.6666, prereq:[]},
-{ id:'Turismo_Gobernanza', name:'Turismo Y Gobernanza', ciclo:'T8', credits:3.33, prereq:[]},
-// Titulación 9
-{ id:'Gestión_Destinos', name:'Gestión Integral De Destinos Turísticos', ciclo:'T9', credits:5, prereq:['Redacción_Titulación']},
-{ id:'Negociación_Comunicación', name:'Técnicas De Negociación Y Comunicación Para El Turismo', ciclo:'T9', credits:3.3333, prereq:['Estrategias_Comerciales']},
-{ id:'Realidad_Nacional', name:'Realidad Nacional Y Geopolítica', ciclo:'T9', credits:1.67, prereq:['Turismo_Gobernanza']},
-{ id:'Trabajo_Titulación', name:'Trabajo De Titulación', ciclo:'T9', credits:3.33, prereq:['Redacción_Titulación']},
-{ id:'Contratación_Pública', name:'Contratación Pública', ciclo:'T9', credits:3.33, prereq:['Formulación_Proyectos']},
-{ id:'Liderazgo', name:'Liderazgo', ciclo:'T9', credits:1.6666, prereq:['Apreciación_Arte_Cultura']},
-// Módulos inglés y computación
-{ id:'Ing_A1-', name:'-A1', ciclo:'M', credits:2.08, prereq:[] },
-{ id:'Ing_A1', name:'A1', ciclo:'M', credits:2.08, prereq:['Ing_A1-']},
-{ id:'Ing_A2', name:'A2', ciclo:'M', credits:2.08, prereq:['Ing_A1']},
-{ id:'Ing_B1', name:'B1', ciclo:'M', credits:2.08, prereq:['Ing_A2']},
-{ id:'Ing_B2', name:'B2', ciclo:'M', credits:2.08, prereq:['Ing_B1']},
-{ id:'Ing_C1', name:'C1', ciclo:'M', credits:2.08, prereq:['Ing_B2']},
-{ id:'Ing_C2', name:'C2', ciclo:'M', credits:2.08, prereq:['Ing_C1']},
-{ id:'Comp_Basico', name:'Windows‑Word‑Internet', ciclo:'M', credits:8, prereq:[]},
-{ id:'Comp_Office', name:'Excel‑PowerPoint', ciclo:'M', credits:8, prereq:['Comp_Basico']},
-];
+  // Pre
+  { id:'Epist', name:'Epistemología del Turismo', ciclo:'PRE', credits:0, prereq:[] },
+  { id:'IntroCom', name:'Introducción a la Comunicación Académica', ciclo:'PRE', credits:0, prereq:[] },
+  { id:'PensComp', name:'Pensamiento Computacional', ciclo:'PRE', credits:0, prereq:[] },
 
-// cargar estado
+  // Básica 1
+  { id:'MatFin', name:'Matemática Financiera', ciclo:'B1', credits:1.67, prereq:['PensComp'] },
+  { id:'TecApl', name:'Tecnología Aplicada', ciclo:'B1', credits:3.33, prereq:['PensComp'] },
+  { id:'TeoriaTur', name:'Teoría del Turismo', ciclo:'B1', credits:3.33, prereq:['Epist'] },
+  { id:'Admin', name:'Administración', ciclo:'B1', credits:3.33, prereq:['IntroCom'] },
+  { id:'MetodInv', name:'Metodología de la Investigación Científica', ciclo:'B1', credits:1.67, prereq:['IntroCom'] },
+  { id:'TecOpTur', name:'Técnicas de Operación Turística', ciclo:'B1', credits:3.33, prereq:['Epist'] },
+
+  // Básica 2
+  { id:'Cosmos', name:'Cosmos Histórico', ciclo:'B2', credits:3.33, prereq:['TeoriaTur'] },
+  { id:'Bioentorno', name:'Bioentorno Turístico', ciclo:'B2', credits:3.33, prereq:['TeoriaTur'] },
+  { id:'TecGuiar', name:'Técnicas de Guiar', ciclo:'B2', credits:3.33, prereq:['TecOpTur'] },
+  { id:'Hospitalidad', name:'Hospitalidad', ciclo:'B2', credits:3.33, prereq:['Admin'] },
+  { id:'EstDesc', name:'Estadística Descriptiva Administrativa', ciclo:'B2', credits:1.67, prereq:['MatFin','TecApl'] },
+  { id:'ComOral', name:'Comunicación Oral y Escrita', ciclo:'B2', credits:1.67, prereq:['MetodInv'] },
+
+  // Básica 3
+  { id:'ComTur', name:'Comunidad y Turismo', ciclo:'B3', credits:1.67, prereq:['Hospitalidad'] },
+  { id:'Gastron', name:'Gastronomía Ancestral y Patrimonio', ciclo:'B3', credits:3.33, prereq:['Hospitalidad'] },
+  { id:'GestOpAreas', name:'Gestión Operativa de Áreas Protegidas', ciclo:'B3', credits:3.33, prereq:['TecGuiar'] },
+  { id:'ManifPlast', name:'Manifestaciones Plásticas Turísticas', ciclo:'B3', credits:3.33, prereq:['Cosmos','ComOral'] },
+  { id:'ProsInter', name:'Prospección Intercultural Ecuatoriana', ciclo:'B3', credits:1.67, prereq:['Cosmos'] },
+  { id:'ContGen', name:'Contabilidad General', ciclo:'B3', credits:3.33, prereq:['EstDesc'] },
+
+  // Profesional 4
+  { id:'FinCorto', name:'Finanzas de Corto Plazo', ciclo:'P4', credits:3.33, prereq:['ContGen'] },
+  { id:'GestTerr', name:'Gestión Territorial en Turismo', ciclo:'P4', credits:3.33, prereq:['GestOpAreas','ManifPlast'] },
+  { id:'GestTalHum', name:'Gestión del Talento Humano', ciclo:'P4', credits:2.5, prereq:['ContGen'] },
+  { id:'Folklore', name:'Folklore', ciclo:'P4', credits:1.67, prereq:['ManifPlast','ProsInter'] },
+  { id:'CodTur', name:'Codificación Turística', ciclo:'P4', credits:3.33, prereq:['GestOpAreas'] },
+  { id:'CampRec', name:'Campismo y Recreación Turística', ciclo:'P4', credits:1.67, prereq:['Gastron','ComTur'] },
+
+  // Profesional 5
+  { id:'Micro', name:'Microeconomía', ciclo:'P5', credits:3.33, prereq:['FinCorto'] },
+  { id:'OpTours', name:'Operación de Tours', ciclo:'P5', credits:3.33, prereq:['CodTur','GestTerr'] },
+  { id:'ForReg', name:'Fomento y Regulaciones a la Actividad Turística', ciclo:'P5', credits:3.33, prereq:['GestTalHum'] },
+  { id:'DesDes', name:'Desarrollo del Turismo Sostenible', ciclo:'P5', credits:5, prereq:[
+      'MatFin','TecApl','TeoriaTur','Admin','MetodInv','TecOpTur','Cosmos',
+      'Bioentorno','TecGuiar','Hospitalidad','EstDesc','ComOral','ComTur',
+      'Gastron','GestOpAreas','ManifPlast','ProsInter','ContGen','FinCorto',
+      'GestTerr','GestTalHum','Folklore','CodTur','CampRec'
+    ] },
+  { id:'IconTur', name:'Iconografía Turística', ciclo:'P5', credits:1.67, prereq:['CodTur'] },
+  { id:'Arqueol', name:'Arqueología', ciclo:'P5', credits:1.67, prereq:['Folklore'] },
+
+  // Profesional 6
+  { id:'PlanTur', name:'Planificación Turística', ciclo:'P6', credits:5, prereq:['DesDes'] },
+  { id:'GestInn', name:'Gestión de la Innovación y Emprendimiento', ciclo:'P6', credits:3.33, prereq:['ForReg'] },
+  { id:'AnimTur', name:'Animación Turística', ciclo:'P6', credits:3.33, prereq:['IconTur'] },
+  { id:'RiceEv', name:'Rice - Organización de Eventos', ciclo:'P6', credits:1.67, prereq:['DesDes'] },
+  { id:'SisReg', name:'Sistemas de Registros Turísticos / Sabre Y Amadeus', ciclo:'P6', credits:1.67, prereq:['OpTours'] },
+  { id:'Macro', name:'Macroeconomía', ciclo:'P6', credits:3.33, prereq:['Micro'] },
+
+  // Profesional 7
+  { id:'Patrimonio', name:'Patrimonio', ciclo:'P7', credits:5, prereq:['PlanTur','GestInn','AnimTur','RiceEv','SisReg','Macro'] },
+  { id:'GestCal', name:'Gestión de Calidad y Productividad', ciclo:'P7', credits:3.33, prereq:['GestInn'] },
+  { id:'OpHotel', name:'Operación Hotelera', ciclo:'P7', credits:3.33, prereq:['SisReg'] },
+  { id:'OpAliBeb', name:'Operación de Alimentos y Bebidas', ciclo:'P7', credits:1.67, prereq:['AnimTur'] },
+  { id:'SocioTur', name:'Sociología del Turismo', ciclo:'P7', credits:3.33, prereq:['AnimTur'] },
+  { id:'TendTur', name:'Tendencias Turísticas', ciclo:'P7', credits:1.67, prereq:['Macro'] },
+
+  // Titulación 8
+  { id:'FormPro', name:'Formulación y Evaluación de Proyectos', ciclo:'T8', credits:3.33, prereq:['GestCal'] },
+  { id:'IntReg', name:'Integración Regional Turística', ciclo:'T8', credits:5, prereq:['Patrimonio','GestCal','OpAliBeb','OpHotel','SocioTur','TendTur'] },
+  { id:'EstrCom', name:'Estrategias Comerciales Turísticas', ciclo:'T8', credits:3.33, prereq:['TendTur'] },
+  { id:'RedacTit', name:'Redacción del Trabajo de Titulación', ciclo:'T8', credits:1.67, prereq:['Patrimonio','GestCal','OpAliBeb','OpHotel','SocioTur','TendTur'] },
+  { id:'AprArte', name:'Apreciación del Arte y la Cultura', ciclo:'T8', credits:1.67, prereq:['Patrimonio'] },
+  { id:'TurGov', name:'Turismo y Gobernanza', ciclo:'T8', credits:3.33, prereq:['OpAliBeb','SocioTur'] },
+
+  // Titulación 9
+  { id:'GestDest', name:'Gestión Integral de Destinos Turísticos', ciclo:'T9', credits:5, prereq:['FormPro','IntReg','EstrCom','RedacTit','AprArte','TurGov'] },
+  { id:'NegCom', name:'Técnicas de Negociación y Comunicación para el Turismo', ciclo:'T9', credits:3.33, prereq:['EstrCom'] },
+  { id:'RealNac', name:'Realidad Nacional y Geopolítica', ciclo:'T9', credits:1.67, prereq:['TurGov'] },
+  { id:'TrabTit', name:'Trabajo de Titulación', ciclo:'T9', credits:3.33, prereq:['RedacTit'] },
+  { id:'ContrPub', name:'Contratación Pública', ciclo:'T9', credits:3.33, prereq:['FormPro'] },
+  { id:'Lider', name:'Liderazgo', ciclo:'T9', credits:1.67, prereq:['AprArte'] },
+
+  // Módulos
+  { id:'Ing0', name:'-A1', ciclo:'M', credits:2.08, prereq:[] },
+  { id:'IngA1', name:'A1', ciclo:'M', credits:2.08, prereq:['Ing0'] },
+  { id:'IngA2', name:'A2', ciclo:'M', credits:2.08, prereq:['IngA1'] },
+  { id:'IngB1', name:'B1', ciclo:'M', credits:2.08, prereq:['IngA2'] },
+  { id:'IngB2', name:'B2', ciclo:'M', credits:2.08, prereq:['IngB1'] },
+  { id:'IngC1', name:'C1', ciclo:'M', credits:2.08, prereq:['IngB2'] },
+  { id:'IngC2', name:'C2', ciclo:'M', credits:2.08, prereq:['IngC1'] },
+  { id:'Comp0', name:'Windows‑Word‑Internet', ciclo:'M', credits:8, prereq:[] },
+  { id:'Comp1', name:'Excel‑PowerPoint', ciclo:'M', credits:8, prereq:['Comp0'] },
+];
 let aprobadas = JSON.parse(localStorage.getItem('aprobadas')||'{}');
 
-// funciones
-function actualizarUI(){
-  materias.forEach(m=>{
-    const grid = document.querySelector(`[data-ciclo="${m.ciclo}"]`);
-    let el = document.getElementById(m.id);
-    if(!el){
-      el = document.createElement('div');
-      el.className = 'materia';
-      el.id = m.id;
-      el.innerHTML = `<div>${m.name}</div>`;
-      const tip = document.createElement('div');
-      tip.className='tooltip';
-      el.appendChild(tip);
-      el.onclick = ()=> toggle(m.id);
-      grid.appendChild(el);
-    }
-    const ok = aprobadas[m.id];
-    const deps = m.prereq.filter(x=>!aprobadas[x]);
-    if(ok){
-      el.classList.add('aprobada');
-      el.classList.remove('bloqueada');
-      el.querySelector('.tooltip').innerText = '';
-    } else if(deps.length){
-      el.classList.add('bloqueada');
-      el.classList.remove('aprobada');
-      el.querySelector('.tooltip').innerText = 'Faltan: ' + deps.map(x=> materias.find(mm=>mm.id===x).name).join(', ');
-    } else {
-      el.classList.remove('bloqueada');
-      el.classList.remove('aprobada');
-      el.querySelector('.tooltip').innerText = '';
-    }
+function update() {
+  document.querySelectorAll('.grid').forEach(grid=>{
+    const ciclo = grid.dataset.ciclo;
+    materias.filter(m=>m.ciclo===ciclo).forEach(m=>{
+      let el = document.getElementById(m.id);
+      if(!el) {
+        el = document.createElement('div');
+        el.className = 'materia';
+        el.id = m.id;
+        el.innerHTML = `<h3>${m.name}</h3><p>Créditos: ${m.credits.toFixed(2)}</p><div class="tooltip"></div>`;
+        el.onclick = ()=>toggle(m.id);
+        grid.appendChild(el);
+      }
+      const ok = aprobadas[m.id];
+      const faltan = m.prereq.filter(p=>!aprobadas[p]).map(p=> materias.find(mm=>mm.id===p).name);
+      el.classList.toggle('aprobada', ok);
+      el.classList.toggle('bloqueada', !ok && faltan.length);
+      el.querySelector('.tooltip').innerText = faltan.length ? 'Faltan: ' + faltan.join(', ') : '';
+    });
   });
-  
-  // créditos
-  ['PRE','B1','B2','B3','P4','P5','P6','P7','T8','T9','M'].forEach(c=>{
-    const sum = materias.filter(m=>m.ciclo===c && aprobadas[m.id])
-                       .reduce((a,b)=>a+b.credits,0);
-    const out = c==='PRE'? 'creditos-pre':
-                c.startsWith('B')? 'creditos-base':
-                c.startsWith('P')? 'creditos-prof':
-                c.startsWith('T')? 'creditos-tit':
-                'creditos-mod';
-    document.getElementById(out).innerText = sum.toFixed(2);
-  });
+  const total = materias.length;
+  const comp = Object.values(aprobadas).filter(v=>v).length;
+  const dispo = materias.filter(m=>!aprobadas[m.id] && !m.prereq.some(p=>!aprobadas[p])).length;
+  document.getElementById('stat-total').innerText = total;
+  document.getElementById('stat-completada').innerText = comp;
+  document.getElementById('stat-disponible').innerText = dispo;
+  document.getElementById('stat-progreso').innerText = ((comp/total)*100).toFixed(0)+'%';
 }
 
-function toggle(id){
+function toggle(id) {
   const m = materias.find(x=>x.id===id);
-  const deps = m.prereq.filter(x=>!aprobadas[x]);
-  if(deps.length) return;
+  if(m.prereq.some(p=>!aprobadas[p])) return;
   aprobadas[id] = !aprobadas[id];
   localStorage.setItem('aprobadas', JSON.stringify(aprobadas));
-  actualizarUI();
+  update();
 }
 
-// inicializar
-actualizarUI();
-</script>
+function reset() {
+  if(confirm('¿Reiniciar todo el progreso?')) {
+    aprobadas = {};
+    localStorage.removeItem('aprobadas');
+    update();
+  }
+}
 
+update();
+</script>
 </body>
 </html>
